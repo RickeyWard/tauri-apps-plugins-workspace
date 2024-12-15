@@ -77,6 +77,7 @@ pub struct FetchResponse {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[allow(dead_code)] //feature flags shoudln't affect api
 pub struct DangerousSettings {
     accept_invalid_certs: bool,
     accept_invalid_hostnames: bool,
@@ -239,7 +240,8 @@ pub async fn fetch<R: Runtime>(
                         let _ = danger_config;
                         return Err(Error::DangerousSettings);
                     }
-                    #[cfg(feature = "dangerous-settings")]{
+                    #[cfg(feature = "dangerous-settings")]
+                    {
                         builder = builder
                             .danger_accept_invalid_certs(danger_config.accept_invalid_certs)
                             .danger_accept_invalid_hostnames(danger_config.accept_invalid_hostnames)
